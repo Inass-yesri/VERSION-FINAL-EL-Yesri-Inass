@@ -39,7 +39,7 @@ Le dataset que j'ai utilisé décrit des **dossiers clients d’une institution 
 *   Nombre total de membres du foyer (CNT\_FAM\_MEMBERS)
     
 
-Dans ton script, la **variable cible** utilisée pour la classification est la dernière colonne du CSV, c’est-à-dire :
+Dans mon script, la **variable cible** utilisée pour la classification est la dernière colonne du CSV, c’est-à-dire :
 
 > CNT\_FAM\_MEMBERS = nombre de personnes dans le foyer.
 
@@ -57,7 +57,7 @@ Même si ce n’est pas un cas « critique » comme le cancer dans le document d
 1.2 Les Données (L’Input)
 -------------------------
 
-À partir de ton fichier Dataset.csv, on obtient :
+À partir de mon fichier Dataset.csv, j'ai obtenu :
 
 *   **Nombre de lignes (clients)** : 438 557
     
@@ -80,9 +80,9 @@ Résumé rapide de quelques colonnes importantes :
 2\. Le Code Python (Laboratoire)
 ================================
 
-Cette partie décrit **ton script**, qui joue le rôle de « laboratoire » : on y charge les données, on les salit artificiellement, on les nettoie, on explore, on entraîne le modèle, puis on évalue les performances.
+Cette partie décrit **mon script**, qui joue le rôle de « laboratoire » : j'ai  chargé les données, je les salit artificiellement, j'explore, j'entraîne le modèle, puis j'évalue les performances.
 
-Ci-dessous, j’insère **ton code tel quel** (sans le modifier), afin qu’il soit clairement documenté dans le rapport.
+Ci-dessous, j’insère **mon code tel quel** (sans le modifier), afin qu’il soit clairement documenté dans le rapport.
 
 ```python
 plt.figure(figsize=(6, 5))  # Ensure xticklabels and yticklabels match the actual number of classes in y_test/y_pred  # If y_test contains more classes than target_names assumes, this might error.  # Using unique classes from y_test/y_pred for labels if target_names is not suitable  plot_labels = report_target_names # Using the same labels as for the classification report  sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False,              xticklabels=plot_labels, yticklabels=plot_labels)  plt.xlabel('Prédiction')  plt.ylabel('Réalité')  plt.title('Matrice de Confusion')  plt.show()  print("\n--- FIN DU SCRIPT ---")
@@ -94,11 +94,11 @@ plt.figure(figsize=(6, 5))  # Ensure xticklabels and yticklabels match the actua
 3.1 Simulation de données « sales »
 -----------------------------------
 
-Comme dans le document de référence, ton script commence par **simuler des données imparfaites**, pour se rapprocher de la réalité.
+Comme dans le document de référence, mon script commence par **simuler des données imparfaites**, pour se rapprocher de la réalité.
 
-*   À partir des données propres df, tu crées une copie df\_dirty.
+*   À partir des données propres df, j'ai créeé une copie df\_dirty.
     
-*   Tu introduis artificiellement des **valeurs manquantes** (NaN) dans **5 %** des cellules, sur **toutes les colonnes sauf target**.
+*   J'ai introduis artificiellement des **valeurs manquantes** (NaN) dans **5 %** des cellules, sur **toutes les colonnes sauf target**.
     
 
 L’idée est de reproduire le cas où :
@@ -113,19 +113,19 @@ L’idée est de reproduire le cas où :
 3.2 Séparation X / y
 --------------------
 
-Avant le nettoyage, tu sépares les données en :
+Avant le nettoyage, je sépare les données en :
 
 *   **X** : toutes les colonnes explicatives (features) → df\_dirty.drop('target', axis=1)
     
 *   **y** : la variable cible (ici, CNT\_FAM\_MEMBERS recopiée dans df\['target'\])
     
 
-Cette séparation X/y est importante, car **y ne doit pas être modifiée** pendant le nettoyage : on ne veut pas imputer la cible.
+Cette séparation X/y est importante, car **y ne doit pas être modifiée** pendant le nettoyage : je ne veut pas imputer la cible.
 
 3.3 Stratégie d’imputation
 --------------------------
 
-Tu utilises une **stratégie d’imputation différenciée** :
+J'utilises une **stratégie d’imputation différenciée** :
 
 1.  numerical\_cols = X.select\_dtypes(include=np.number).columnsimputer\_numeric = SimpleImputer(strategy='mean')X\[numerical\_cols\] = imputer\_numeric.fit\_transform(X\[numerical\_cols\])
     
@@ -138,14 +138,14 @@ Tu utilises une **stratégie d’imputation différenciée** :
     *   Pour chaque colonne de type catégorie (genre, type de revenu, etc.), la valeur manquante est remplacée par la **modalité la plus fréquente** (le mode).
         
 
-Tu crées ensuite X\_clean = X.copy(), qui contient la version **complètement imputée** des features.
+Je crée ensuite X\_clean = X.copy(), qui contient la version **complètement imputée** des features.
 
 3.4 Le Coin de l’Expert : Data Leakage
 --------------------------------------
 
-Comme dans le projet de référence, on peut noter une subtilité :
+Comme dans le projet de référence, je peut noter une subtilité :
 
-*   Tu fais l’imputation (fit de l’imputer) **sur l’ensemble des données** avant de couper en train/test.
+*   Je fais l’imputation (fit de l’imputer) **sur l’ensemble des données** avant de couper en train/test.
     
 *   En théorie, la **bonne pratique stricte** est :
     
@@ -163,12 +163,12 @@ Ici, comme il s’agit d’un projet pédagogique, cette approximation est accep
 4\. Analyse Approfondie : Exploration (EDA)
 ===========================================
 
-Dans la partie EDA, tu cherches à **profilier** les clients et à comprendre la structure de tes données avant d’entraîner le modèle.
+Dans la partie EDA, je cherches à **profilier** les clients et à comprendre la structure de tes données avant d’entraîner le modèle.
 
 4.1 Statistiques descriptives
 -----------------------------
 
-Tu affiches des statistiques descriptives sur les premières colonnes numériques de X\_clean :
+J'affiches des statistiques descriptives sur les premières colonnes numériques de X\_clean :
 
 *   count, mean, std, min, 25%, 50%, 75%, max.
     
@@ -185,13 +185,13 @@ Ces indicateurs permettent de repérer :
 4.2 Distribution des revenus par taille de foyer
 ------------------------------------------------
 
-Tu choisis une variable clé pour l’analyse :
+Je choisis une variable clé pour l’analyse :
 
 ```python
 feature_to_plot = 'AMT_INCOME_TOTAL'   `
 ```
 
-Puis tu traces un **histogramme** :
+Puis je traces un **histogramme** :
 
 *   Axe X : revenu total (AMT\_INCOME\_TOTAL)
     
@@ -208,7 +208,7 @@ Ce graphique permet de voir :
 4.3 Corrélations entre variables numériques
 -------------------------------------------
 
-Tu calcules ensuite une **matrice de corrélation** sur les colonnes numériques de X\_clean et tu l’affiches avec :
+Je calcules ensuite une **matrice de corrélation** sur les colonnes numériques de X\_clean et tu l’affiches avec :
 
 ```python
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")   `
@@ -228,7 +228,7 @@ Pour un Random Forest, la multicollinéarité n’est pas un problème majeur, m
 5\. Analyse Approfondie : Méthodologie (Split)
 ==============================================
 
-Tu appliques ensuite le découpage train/test :
+J'appliques ensuite le découpage train/test :
 
 ```python
 X_train, X_test, y_train, y_test = train_test_split(      X_clean, y, test_size=0.2, random_state=42  )
@@ -251,7 +251,7 @@ X_train, X_test, y_train, y_test = train_test_split(      X_clean, y, test_size=
 6\. FOCUS THÉORIQUE : L’Algorithme Random Forest 🌲
 ===================================================
 
-Tu utilises :
+J'utilises :
 
 ```python
   model = RandomForestClassifier(n_estimators=100, random_state=42)  model.fit(X_train, y_train)   `
@@ -320,7 +320,7 @@ C’est pour cela qu’en pratique, Random Forest est un **excellent point de d�
 7\. Analyse Approfondie : Évaluation (L’Heure de Vérité)
 ========================================================
 
-Après l’entraînement, tu calcules :
+Après l’entraînement, je calcules :
 
 ```python
 
