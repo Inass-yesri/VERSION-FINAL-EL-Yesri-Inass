@@ -8,7 +8,7 @@ PAR EL YESRI INASS
 1.1 Le Problème (Business Case)
 -------------------------------
 
-Le dataset que tu utilises décrit des **dossiers clients d’une institution financière** (type banque / organisme de crédit).Chaque ligne représente un **client** et regroupe des informations socio-économiques :
+Le dataset que j'ai utilisé décrit des **dossiers clients d’une institution financière** (type banque / organisme de crédit).Chaque ligne représente un **client** et regroupe des informations socio-économiques :
 
 *   Sexe (CODE\_GENDER)
     
