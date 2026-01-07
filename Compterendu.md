@@ -1,5 +1,4 @@
 PAR EL YESRI INASS-24010318
-<img width="100" height="150" alt="image" src="https://github.com/user-attachments/assets/8ff73355-eaf0-42d3-ac75-12fdc08df8d2" />
 
 
 1\. Le Contexte Métier et la Mission
